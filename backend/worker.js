@@ -37,14 +37,14 @@ export default {
         // todo: store the request in database.
 
         try {
-            const response = await translate(env, textToTranslate, targetLanguage);
+            const { translated_text, tokens } = await translate(env, textToTranslate, targetLanguage);
 
 
             // todo: update the request in database. set status=sucess, response=response.response, tokens=response.usage.total_tokens
             return Response.json(
                 {
-                    response: response.translated_text,
-                    tokens: response.usage.total_tokens
+                    response: translated_text,
+                    tokens: tokens
                 },
                 {
                     headers: corsHeaders
