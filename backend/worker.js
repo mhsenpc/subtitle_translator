@@ -1,4 +1,4 @@
-const MODEL_NAME = '@cf/meta/llama-3-8b-instruct';
+const MODEL_NAME = '@cf/meta/m2m100-1.2b';
 
 export default {
     async fetch(request, env) {
