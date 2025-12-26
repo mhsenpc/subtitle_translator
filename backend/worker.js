@@ -1,4 +1,4 @@
-const MODEL_NAME = '@cf/meta/m2m100-1.2b';
+const MODEL_NAME = '@cf/meta/llama-3-8b-instruct';
 
 export default {
     async fetch(request, env) {
@@ -44,8 +44,7 @@ export default {
         };
 
         try {
-            const model = data.model || MODEL_NAME;
-            const response = await env.AI.run(model, chat);
+            const response = await env.AI.run(MODEL_NAME, chat);
 
             // todo: update the request in database. set status=sucess, response=response.response, tokens=response.usage.total_tokens
             return Response.json(
