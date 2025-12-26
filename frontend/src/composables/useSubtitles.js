@@ -76,13 +76,13 @@ export function useSubtitles() {
         isProcessing.value = true;
         isStopped.value = false;
         progress.value = 0;
-        
+
         const itemsToTranslate = subtitles.value.filter(item => !item.translatedText);
         const total = subtitles.value.length;
         // Count already filtered as completed for progress calculation base
         let completedCount = total - itemsToTranslate.length;
 
-        const MAX_CONCURRENT = 5;
+        const MAX_CONCURRENT = 8;
         const queue = [...itemsToTranslate];
         const activePromises = new Set();
 
@@ -110,7 +110,7 @@ export function useSubtitles() {
                 if (data && data.response) {
                     item.translatedText = data.response;
                 } else {
-                     throw new Error('Invalid response format');
+                    throw new Error('Invalid response format');
                 }
             } catch (e) {
                 console.error("Translation error", e);
