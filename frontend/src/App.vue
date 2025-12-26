@@ -19,21 +19,23 @@
         </div>
       </div>
 
+
       <!-- Editor State -->
       <div v-else class="animate-fade-in flex flex-col h-full overflow-hidden">
-        <!-- Toolbar -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-dark-card p-4 rounded-xl border border-gray-800 shadow-xl">
-          <div class="flex items-center gap-4">
-            <div class="p-2 bg-primary-blue/10 rounded-lg">
-              <span class="font-mono text-primary-blue text-sm font-bold">SRT</span>
+        <!-- Toolbar & Actions -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 px-1">
+          <!-- Language Indicators -->
+          <div class="flex items-center gap-3 order-2 md:order-1">
+            <div class="px-4 py-2 rounded bg-green-900/20 border border-green-800/50 text-green-400 text-sm font-medium">
+              زبان مقصد: فارسی
             </div>
-            <div>
-              <h3 class="font-medium text-gray-200">{{ fileName }}</h3>
-              <p class="text-sm text-gray-500">{{ filteredSubtitles.length }} بلوک پیدا شد</p>
+            <div class="px-4 py-2 rounded bg-blue-900/20 border border-blue-800/50 text-blue-400 text-sm font-medium">
+              زبان مبدأ: از هر زبانی
             </div>
           </div>
           
-          <div class="flex items-center gap-3">
+          <!-- Actions -->
+          <div class="flex items-center gap-3 order-1 md:order-2">
             <button 
               @click="clearSubtitles"
               class="px-4 py-2 rounded-lg border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 hover:bg-gray-800 transition-all text-sm"
@@ -42,20 +44,14 @@
             </button>
             <button 
               @click="isProcessing ? stopTranslation() : translateAll()"
-              class="px-6 py-2 rounded-lg text-white font-medium shadow-lg transition-all flex items-center gap-2 w-48 justify-center"
+              class="px-6 py-2 rounded-lg text-white font-medium shadow-lg transition-all flex items-center gap-2 min-w-[140px] justify-center"
               :class="isProcessing ? 'bg-red-500 hover:bg-red-600 shadow-red-500/25' : 'bg-primary-blue hover:bg-blue-600 shadow-primary-blue/25'"
             >
               <template v-if="!isProcessing">
                 <span>شروع ترجمه</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
               </template>
               <template v-else>
                 <span>توقف ({{ progress }}%)</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
               </template>
             </button>
             
@@ -67,24 +63,35 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download
+              <span>دانلود</span>
             </button>
           </div>
         </div>
 
         <!-- Progress Bar (Visible when processing) -->
-        <div v-if="isProcessing || progress > 0" class="w-full bg-gray-700 h-1 mb-6 rounded-full overflow-hidden">
+        <div v-if="isProcessing || progress > 0" class="w-full bg-gray-800 h-1 mb-6 rounded-full overflow-hidden">
              <div class="bg-primary-blue h-full transition-all duration-300" :style="{ width: `${progress}%` }"></div>
         </div>
 
-        <!-- Subtitles List -->
-        <div class="space-y-4 overflow-y-auto flex-1 custom-scrollbar pr-2 pb-4">
-          <SubtitleCard 
-            v-for="(block, index) in filteredSubtitles" 
-            :key="index"
-            :block="block"
-            :index="index"
-          />
+        <!-- Main List Container -->
+        <div class="flex-1 flex flex-col bg-dark-card border border-gray-700/50 rounded-lg overflow-hidden shadow-2xl">
+          <!-- Column Headers -->
+          <div class="grid grid-cols-2 border-b border-gray-700/50 bg-gray-800/30">
+            <div class="p-4 text-center text-gray-400 font-medium text-lg border-r border-gray-700/30">متن اصلی</div>
+            <div class="p-4 text-center text-gray-400 font-medium text-lg">متن ترجمه شده</div>
+          </div>
+
+          <!-- Subtitles List -->
+          <div class="flex-1 overflow-y-auto custom-scrollbar">
+            <div class="divide-y divide-gray-700/50">
+              <SubtitleCard 
+                v-for="(block, index) in filteredSubtitles" 
+                :key="index"
+                :block="block"
+                :index="index"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </main>
