@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-dark-bg text-gray-100">
+  <div class="h-screen flex flex-col bg-dark-bg text-gray-100 overflow-hidden">
     <AppHeader @search="handleSearch" />
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8 flex flex-col overflow-hidden">
       <!-- File Upload State -->
-      <div v-if="subtitles.length === 0" class="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in-up">
+      <div v-if="subtitles.length === 0" class="flex flex-col items-center justify-center h-full animate-fade-in-up">
         <div class="max-w-xl w-full">
           <div class="text-center mb-12">
             <h2 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-500 mb-4">
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Editor State -->
-      <div v-else class="animate-fade-in">
+      <div v-else class="animate-fade-in flex flex-col h-full overflow-hidden">
         <!-- Toolbar -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-dark-card p-4 rounded-xl border border-gray-800 shadow-xl">
           <div class="flex items-center gap-4">
@@ -78,7 +78,7 @@
         </div>
 
         <!-- Subtitles List -->
-        <div class="space-y-4">
+        <div class="space-y-4 overflow-y-auto flex-1 custom-scrollbar pr-2 pb-4">
           <SubtitleCard 
             v-for="(block, index) in filteredSubtitles" 
             :key="index"
@@ -145,5 +145,23 @@ const filteredSubtitles = computed(() => {
   to {
     opacity: 1;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); 
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2); 
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3); 
 }
 </style>
