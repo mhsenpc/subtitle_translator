@@ -1,4 +1,4 @@
-const MODEL_NAME = '@cf/meta/m2m100-1.2b';
+import { translate } from './provider.js';
 
 export default {
     async fetch(request, env) {
@@ -37,14 +37,7 @@ export default {
         // todo: store the request in database.
 
         try {
-            const response = await env.AI.run(
-                MODEL_NAME,
-                {
-                    text: textToTranslate,
-                    source_lang: "english", // defaults to english
-                    target_lang: targetLanguage,
-                }
-            );
+            const response = await translate(env, textToTranslate, targetLanguage);
 
 
             // todo: update the request in database. set status=sucess, response=response.response, tokens=response.usage.total_tokens
