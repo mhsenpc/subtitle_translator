@@ -1,4 +1,4 @@
-const MODEL_NAME = '@cf/meta/llama-3-8b-instruct';
+const MODEL_NAME = '@cf/meta/m2m100-1.2b';
 
 export default {
     async fetch(request, env) {
@@ -36,20 +36,21 @@ export default {
         };
         // todo: store the request in database.
 
-        let chat = {
-            messages: [
-                { role: 'system', content: `You are a translator. I will provide you with some text and you will translate it to the target language in output without any additional information. Target language is ${targetLanguage}.` },
-                { role: 'user', content: textToTranslate }
-            ]
-        };
-
         try {
-            const response = await env.AI.run(MODEL_NAME, chat);
+            const response = await env.AI.run(
+                MODEL_NAME,
+                {
+                    text: textToTranslate,
+                    source_lang: "english", // defaults to english
+                    target_lang: targetLanguage,
+                }
+            );
+
 
             // todo: update the request in database. set status=sucess, response=response.response, tokens=response.usage.total_tokens
             return Response.json(
                 {
-                    response: response.response,
+                    response: response.translated_text,
                     tokens: response.usage.total_tokens
                 },
                 {
