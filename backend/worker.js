@@ -44,7 +44,8 @@ export default {
         };
 
         try {
-            const response = await env.AI.run(MODEL_NAME, chat);
+            const model = data.model || MODEL_NAME;
+            const response = await env.AI.run(model, chat);
 
             // todo: update the request in database. set status=sucess, response=response.response, tokens=response.usage.total_tokens
             return Response.json(
